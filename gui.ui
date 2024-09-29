@@ -1,0 +1,1261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>652</width>
+    <height>519</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QLabel" name="label_01">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>10</y>
+     <width>401</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>20</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Log In &amp; Crawling</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_02">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>150</y>
+     <width>401</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>20</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Output Column Order</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_order_1">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>230</y>
+     <width>21</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>1</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_order_2">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>230</y>
+     <width>21</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>2</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_order_3">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>230</y>
+     <width>21</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>3</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_order_4">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>230</y>
+     <width>21</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>4</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_order_5">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>280</y>
+     <width>21</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>5</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_order_6">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>280</y>
+     <width>21</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>6</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_order_7">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>280</y>
+     <width>21</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>7</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_status">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>464</y>
+     <width>71</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Status</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_open">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>70</y>
+     <width>151</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Open
+Taobao</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_order_save">
+   <property name="geometry">
+    <rect>
+     <x>360</x>
+     <y>370</y>
+     <width>281</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Order Save</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_status">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>460</y>
+     <width>511</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>실행 전</string>
+   </property>
+  </widget>
+  <widget class="Line" name="line_h1">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>140</y>
+     <width>601</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="Line" name="line_h2">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>430</y>
+     <width>601</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="cb_01">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>230</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>주문번호</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>주문일자</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품명</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>옵션순서</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>색상</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>사이즈</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>수량</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>단가(위안화)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>이미지URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>운송사</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Traking#</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label_order_8">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>280</y>
+     <width>21</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>8</string>
+   </property>
+  </widget>
+  <widget class="Line" name="line">
+   <property name="geometry">
+    <rect>
+     <x>313</x>
+     <y>70</y>
+     <width>20</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_crawl">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>70</y>
+     <width>151</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Run
+Crawl</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="cb_02">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>230</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>주문번호</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>주문일자</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품명</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>옵션순서</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>색상</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>사이즈</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>수량</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>단가(위안화)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>이미지URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>운송사</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Traking#</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="cb_03">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>230</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>주문번호</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>주문일자</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품명</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>옵션순서</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>색상</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>사이즈</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>수량</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>단가(위안화)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>이미지URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>운송사</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Traking#</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="cb_04">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>230</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>주문번호</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>주문일자</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품명</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>옵션순서</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>색상</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>사이즈</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>수량</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>단가(위안화)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>이미지URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>운송사</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Traking#</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="cb_05">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>280</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>주문번호</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>주문일자</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품명</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>옵션순서</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>색상</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>사이즈</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>수량</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>단가(위안화)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>이미지URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>운송사</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Traking#</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="cb_06">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>280</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>주문번호</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>주문일자</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품명</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>옵션순서</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>색상</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>사이즈</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>수량</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>단가(위안화)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>이미지URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>운송사</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Traking#</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="cb_07">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>280</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>주문번호</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>주문일자</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품명</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>옵션순서</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>색상</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>사이즈</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>수량</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>단가(위안화)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>이미지URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>운송사</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Traking#</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="cb_08">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>280</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>주문번호</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>주문일자</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품명</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>옵션순서</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>색상</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>사이즈</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>수량</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>단가(위안화)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>이미지URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>운송사</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Traking#</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="cb_09">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>330</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>주문번호</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>주문일자</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품명</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>옵션순서</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>색상</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>사이즈</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>수량</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>단가(위안화)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>이미지URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>운송사</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Traking#</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label_order_9">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>330</y>
+     <width>21</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>9</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="cb_10">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>330</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>주문번호</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>주문일자</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품명</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>옵션순서</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>색상</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>사이즈</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>수량</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>단가(위안화)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>이미지URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>운송사</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Traking#</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label_order_10">
+   <property name="geometry">
+    <rect>
+     <x>164</x>
+     <y>330</y>
+     <width>21</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>10</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="cb_11">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>330</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>주문번호</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>주문일자</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품명</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>옵션순서</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>색상</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>사이즈</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>수량</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>단가(위안화)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>이미지URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>운송사</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Traking#</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label_order_11">
+   <property name="geometry">
+    <rect>
+     <x>324</x>
+     <y>330</y>
+     <width>21</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>11</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="cb_12">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>330</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>주문번호</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>주문일자</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품명</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>옵션순서</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>색상</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>사이즈</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>수량</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>단가(위안화)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>이미지URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>상품URL</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>운송사</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Traking#</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label_order_12">
+   <property name="geometry">
+    <rect>
+     <x>484</x>
+     <y>330</y>
+     <width>21</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>11</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>12</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
