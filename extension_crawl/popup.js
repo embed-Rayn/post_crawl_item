@@ -187,3 +187,5 @@ document.getElementById('saveBtn').addEventListener('click', () => {
 });
 
 
+////*[@id="tp-bought-root"]/div[47]/div[2]/ul/li[6]/a 클릭하여 다음페이지
+////*[@id="J_SiteNavLogin"]/div[1]/div/a 텍스트 가져와 ID 추출
