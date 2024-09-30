@@ -11,6 +11,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver import Remote
 import pyperclip
 from bs4 import BeautifulSoup
 import re
@@ -105,66 +106,62 @@ class WindowClass(QMainWindow, Ui_Dialog):
     def open_browser(self):
         url = "https://world.taobao.com/"
         url = "https://buyertrade.taobao.com/trade/itemlist/list_bought_items.htm"
-        'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe --remote-debugging-port=9222 --user-data-dir="C:/ChromeDevSession"'
-        chrome_options = Options()
-        chrome_options.add_experimental_option("detach", True)
-        chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
+        url = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe --remote-debugging-port=9222 --user-data-dir="C:/ChromeDevSession"'
+        """
+        """
+        # chrome_options = Options()
+        # chrome_options.add_experimental_option("detach", True)
+        # # driver = webdriver.Chrome(options=chrome_options)
+        # # chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
+        
+        # # driver = webdriver.Chrome(service=Service('chromedriver'), options=chrome_options)
+        # # driver.get(url)
+        # url = 'http://localhost:9222' # 띄워진 브라우저의 URL
+        # # chrome_options = Remote.webdriver.ChromeOptions()
+        # chrome_options.add_experimental_option('debuggerAddress', 'localhost:9222') # 띄워진 브라우저의 주소 및 포트 번호 입력
+        # driver = Remote(command_executor=url, options=chrome_options)
+        # driver.maximize_window()
+        # self.driver = driver
+
+
+        PORT = 9222  # 디버깅 포트 설정
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument(r'user-data-dir=C:\remote-profile')  # Profile 경로 지정
+        chrome_options.add_argument(f'remote-debugging-port={PORT}') # 디버깅 포트 설정
+        chrome_options.add_experimental_option('detach', True)
+        driver = webdriver.Chrome(options=chrome_options)
+
+        # 불필요한 크롬창 제거
+        if len(driver.window_handles) > 1:
+            for handle in driver.window_handles[:-1]:
+                driver.switch_to.window(handle)
+                driver.close()
+        driver.switch_to.window(driver.window_handles[0])       
+
+        driver.get('https://world.taobao.com/')
+        html_content = driver.page_source
+        print(html_content)
+
+
+        
+        # DEBUGGING_PORT = 9222
+
+        # # ChromeOptions 설정
+        # chrome_options = webdriver.ChromeOptions()
+        # chrome_options.add_experimental_option("debuggerAddress", f"localhost:{DEBUGGING_PORT}")
+
+        # # ChromeDriver 실행 (자동화 브라우저가 아닌 현재 열려있는 탭 제어)
         # driver = webdriver.Chrome(options=chrome_options)
-        driver = webdriver.Chrome(service=Service('chromedriver'), options=chrome_options)
-        driver.get(url)
-        driver.maximize_window()
-        self.driver = driver
+
+        # # 예: 현재 탭에서 Google 페이지 열기
+        # driver.get("https://www.example.com")
+        # html_content = driver.page_source
+        # print(html_content)
+ 
 
     
     def crawling(self):
-        html_content = self.driver.page_source  # Get the HTML content
-        soup = BeautifulSoup(html_content, 'html.parser')
-        self.post_company_dict = self.get_post_company(soup)
-        root_div = soup.find("div", id="tp-bought-root")
-        # ["주문번호", "주문일자", "상품명", "옵션순서", "색상", "사이즈", "수량", "단가(위안화)", "이미지URL", "상품URL", "운송사", "Traking#"]
-        # [ "상품명", "옵션순서", "색상", "사이즈", "수량", "단가(위안화)", "이미지URL", "상품URL"]\
-        data_list = []
-        for div_i, div in enumerate(root_div.find_all("div")):
-            try:
-                order_number = div.find("table").find("tbody").find("tr").find("td").find_all("span")[2].text
-            except AttributeError:
-                print(f"Not Found [order_number]: index {div_i}")
-            try:
-                post_info = self.post_company_dict[order_number]
-                post_company = post_info["post_company"]
-                traking_number = post_info["traking_number"]
-            except AttributeError:
-                print(f"Not Found [post_info]: index {div_i}")
-            # //*[@id="tp-bought-root"]/div[37]/div/table/tbody[2]/tr[1]
-            option_details = div.find("table").find_all("tbody")[1].find_all("tr")
-            for opt_idx, option_detail in enumerate(option_details):
-                try:
-                    # //*[@id="tp-bought-root"]/div[12]/div/table/tbody[2]/tr/td[1]/div/div[2]/p[4]/span[2]
-                    # //*[@id="tp-bought-root"]/div[50]/div/table/tbody[2]/tr/td[1]/div/div[2]/p[2]/span[1]/span[3]
-                    # //*[@id="tp-bought-root"]/div[50]/div/table/tbody[2]/tr/td[1]/div/div[2]/p[2]/span[2]/span[3]
-                    order_date = option_details.find("td").find("div").find_all("div")[1].find_all("p")[3].find_all("span")[1].text
-                    order_date = convert_date(order_date)
-                    product_name = option_details.find("td").find("div").find_all("div")[1].find_all("p")[3].find_all("span")[1].text
-                    option1_value = option_details.find("td").find("div").find_all("div")[1].find("p").find("a").find_all("span")[1].text
-                    color = option_details.find("td").find("div").find_all("div")[1].find_all("p")[1].find_all("span")[1].find_all("span")[2].text
-                    size = option_details.find("td").find("div").find_all("div")[1].find_all("p")[1].find("span").find_all("span")[2].text
-                    quantity_value = option_details.find_all("td")[2].find("div").find("p").text
-                    price_value = option_details.find_all("td")[1].find("div").find_all("p")[-1].find_all("span")[1].text
-                    image_url = option_details.find("td").find("div").find_all("div")[0].find("a").find("img")["src"]
-                    product_url = option_details.find("td").find("div").find_all("div")[0].find("a")["href"]
-                    data_list.append({
-                        "order_date": order_date,
-                        "product_name": product_name,
-                        "option1_value": option1_value,
-                        "color": color,
-                        "size": size,
-                        "quantity_value": quantity_value,
-                        "price_value": price_value,
-                        "image_url": image_url,
-                        "product_url": product_url
-                    })
-                except AttributeError:
-                    print(f"Not Found [ETC]: index  {opt_idx}")
+        self.driver.get("https://world.taobao.com/")
 
 
     def copy_clipboard(self, df):
@@ -179,22 +176,7 @@ class WindowClass(QMainWindow, Ui_Dialog):
 
 
     def get_post_company(soup):
-        post_dict ={}
-        list_bought_items = soup.find(id="list-bought-items").find_all("div")
-
-        for i, div in enumerate(list_bought_items):
-            try:
-                prefix = div.find("div").find("div").find("div").find_all("div")[1].find("div")
-                post_company = prefix.find("div").find("span").text
-                traking_number = prefix.find("div").find_all("span")[2].text
-                order_string = prefix.find("ul").find_all("li")[2].find("p").find("span").find("a")["href"]
-                match = re.search(r"orderId=(\d+)", order_string)
-                # if match:
-                order_id = match.group(1)
-                post_dict[order_id] = {"post_company": post_company, "traking_number":traking_number}
-            except:
-                pass
-        return post_dict
+        pass
 
 
 if __name__ == "__main__":

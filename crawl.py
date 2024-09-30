@@ -99,7 +99,6 @@ class WindowClass(QMainWindow, Ui_Dialog):
         self.post_company_dict = self.get_post_company(soup)
         root_div = soup.find("div", id="tp-bought-root")
         # ["주문번호", "주문일자", "상품명", "옵션순서", "색상", "사이즈", "수량", "단가(위안화)", "이미지URL", "상품URL", "운송사", "Traking#"]
-        # [ "상품명", "옵션순서", "색상", "사이즈", "수량", "단가(위안화)", "이미지URL", "상품URL"]
         for div_i, div in enumerate(root_div.find_all("div")):
             try:
                 order_number = div.find("table").find("tbody").find("tr").find("td").find_all("span")[2].text
@@ -119,8 +118,8 @@ class WindowClass(QMainWindow, Ui_Dialog):
                     order_date = option_details.find("td").find("div").find_all("div")[1].find_all("p")[3].find_all("span")[1].text
                     product_name = option_details.find("td").find("div").find_all("div")[1].find_all("p")[3].find_all("span")[1].text
                     option1_value = option_details.find("td").find("div").find_all("div")[1].find("p").find("a").find_all("span")[1].text
-                    color = dummy
-                    size = dummy
+                    # color = dummy
+                    # size = dummy
                     quantity_value = option_details.find_all("td")[2].find("div").find("p").text
                     price_value = option_details.find_all("td")[1].find("div").find_all("p")[-1].find_all("span")[1].text
                     image_url = option_details.find("td").find("div").find_all("div")[0].find("a").find("img")["src"]
@@ -130,15 +129,6 @@ class WindowClass(QMainWindow, Ui_Dialog):
                     print(f"Not Found [ETC]: index  {opt_idx}")
 
 
-    def copy_clipboard(self, df):
-        pass
-    
-
-    def save_col(self):
-        self.excel_order = [cb.currentText() for cb in self.cb_list]
-        
-        with open(self.column_path, 'wb') as file:
-            pickle.dump(self.excel_order, file)
 
 
     def get_post_company(soup):
@@ -159,6 +149,15 @@ class WindowClass(QMainWindow, Ui_Dialog):
                 pass
         return post_dict
 
+    def copy_clipboard(self, df):
+        pass
+    
+
+    def save_col(self):
+        self.excel_order = [cb.currentText() for cb in self.cb_list]
+        
+        with open(self.column_path, 'wb') as file:
+            pickle.dump(self.excel_order, file)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
