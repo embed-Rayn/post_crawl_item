@@ -123,25 +123,25 @@ class WindowClass(QMainWindow, Ui_Dialog):
         # driver.maximize_window()
         # self.driver = driver
 
+        #===============
+        # PORT = 9222  # 디버깅 포트 설정
+        # chrome_options = webdriver.ChromeOptions()
+        # chrome_options.add_argument(r'user-data-dir=C:\remote-profile')  # Profile 경로 지정
+        # chrome_options.add_argument(f'remote-debugging-port={PORT}') # 디버깅 포트 설정
+        # chrome_options.add_experimental_option('detach', True)
+        # driver = webdriver.Chrome(options=chrome_options)
 
-        PORT = 9222  # 디버깅 포트 설정
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument(r'user-data-dir=C:\remote-profile')  # Profile 경로 지정
-        chrome_options.add_argument(f'remote-debugging-port={PORT}') # 디버깅 포트 설정
-        chrome_options.add_experimental_option('detach', True)
-        driver = webdriver.Chrome(options=chrome_options)
+        # # 불필요한 크롬창 제거
+        # if len(driver.window_handles) > 1:
+        #     for handle in driver.window_handles[:-1]:
+        #         driver.switch_to.window(handle)
+        #         driver.close()
+        # driver.switch_to.window(driver.window_handles[0])       
 
-        # 불필요한 크롬창 제거
-        if len(driver.window_handles) > 1:
-            for handle in driver.window_handles[:-1]:
-                driver.switch_to.window(handle)
-                driver.close()
-        driver.switch_to.window(driver.window_handles[0])       
-
-        driver.get('https://world.taobao.com/')
-        html_content = driver.page_source
-        print(html_content)
-
+        # driver.get('https://world.taobao.com/')
+        # html_content = driver.page_source
+        # print(html_content)
+#===============
 
         
         # DEBUGGING_PORT = 9222
@@ -157,8 +157,19 @@ class WindowClass(QMainWindow, Ui_Dialog):
         # driver.get("https://www.example.com")
         # html_content = driver.page_source
         # print(html_content)
- 
-
+ #===============
+  
+        # # driver = webdriver.Chrome(options=chrome_options)
+        # # chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
+        
+        # # driver = webdriver.Chrome(service=Service('chromedriver'), options=chrome_options)
+        # # driver.get(url)
+        # url = 'http://localhost:9222' # 띄워진 브라우저의 URL
+        # # chrome_options = Remote.webdriver.ChromeOptions()
+        # chrome_options.add_experimental_option('debuggerAddress', 'localhost:9222') # 띄워진 브라우저의 주소 및 포트 번호 입력
+        # driver = Remote(command_executor=url, options=chrome_options)
+        # driver.maximize_window()
+        # self.driver = driver
     
     def crawling(self):
         self.driver.get("https://world.taobao.com/")
