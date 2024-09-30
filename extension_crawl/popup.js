@@ -1,22 +1,136 @@
-document.getElementById("crawlBtn").addEventListener("click", () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.scripting.executeScript({
-        target: { tabId: tabs[0].id },
-        func: getHTMLContent
-      }, (results) => {
-        if (results && results[0]) {
-          const htmlContent = results[0].result;
-  
-          // HTML 저장하기 (Local Storage 사용)
-          chrome.storage.local.set({ html: htmlContent }, () => {
-            alert('HTML content saved successfully!');
-          });
-        } else {
-          alert('Failed to retrieve HTML content.');
-        }
-      });
-    });
+function getPostCompany() {
+  const postDict = {};
+  const listBoughtItems = document.querySelectorAll("#list-bought-items div");
+
+  listBoughtItems.forEach((div, i) => {
+      try {
+          const prefix = div.querySelector("div > div > div > div:nth-of-type(2) > div");
+          const postCompany = prefix.querySelector("div span").innerText;
+          const trackingNumber = prefix.querySelectorAll("div span")[2].innerText;
+          const orderString = prefix.querySelector("ul li:nth-of-type(3) p span a").getAttribute("href");
+
+          // 정규식을 사용하여 orderId를 추출
+          const match = orderString.match(/orderId=(\d+)/);
+          if (match) {
+              const orderId = match[1];
+              postDict[orderId] = { post_company: postCompany, tracking_number: trackingNumber };
+          }
+      } catch (err) {
+          console.log(`Error processing item ${i}:`, err);
+      }
   });
+
+  return postDict;
+}
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text)
+      .then(() => {
+          console.log('클립보드에 복사되었습니다: ' + text);
+      })
+      .catch(err => {
+          console.error('클립보드 복사 중 오류 발생:', err);
+      });
+}
+
+function convertOrderDataToString(orderData) {
+  // 각 객체의 속성값을 \t로 구분하여 string으로 변환
+  return orderData.map(order => {
+      return [
+          order.orderNumber,
+          order.orderDate,
+          order.productName,
+          order.optionValue,
+          order.color,
+          order.size,
+          order.quantityValue,
+          order.priceValue,
+          order.imageUrl,
+          order.productUrl,
+          order.postCompany,
+          order.trackingNumber
+      ].join('\t'); // 각 속성을 \t으로 구분
+  }).join('\n'); // 각 객체는 \n으로 구분
+}
+
+document.getElementById('crawlBtn').addEventListener('click', () => {
+  try {
+      // tp-bought-root div 찾기
+      const rootDiv = document.querySelector("#tp-bought-root");
+
+      if (!rootDiv) {
+          console.log("Not Found: root_div");
+          return;
+      }
+
+      // 주문 정보를 저장할 배열
+      const orderData = [];
+      postCompanyDict = getPostCompany()
+      // rootDiv에서 모든 div 탐색
+      rootDiv.querySelectorAll('div').forEach((div, div_i) => {
+          let orderNumber = '';
+          let postCompany = '';
+          let trackingNumber = '';
+          // 주문번호 찾기
+          try {
+              orderNumber = div.querySelector("table tbody tr td span:nth-of-type(3)").innerText;
+          } catch (err) {
+              console.log(`Not Found [order_number]: index ${div_i}`);
+          }
+          try {
+              const postInfo = postCompanyDict[orderNumber];
+              postCompany = postInfo.post_company;
+              trackingNumber = postInfo.tracking_number;
+          } catch (err) {
+              console.log(`Not Found [post_info]: index ${div_i}`);
+          }
+
+          // 옵션 및 세부 정보 추출
+          const optionDetails = div.querySelectorAll("table tbody:nth-of-type(2) tr");
+
+          optionDetails.forEach((optionDetail, opt_idx) => {
+              try {
+                  const orderDate = optionDetail.querySelector("td div div:nth-of-type(2) p:nth-of-type(4) span:nth-of-type(2)").innerText;
+                  const productName = optionDetail.querySelector("td div div:nth-of-type(2) p:nth-of-type(4) span:nth-of-type(2)").innerText;
+                  const optionValue = optionDetail.querySelector("td div div:nth-of-type(2) p a span:nth-of-type(2)").innerText;
+                  const color = 1;
+                  const size = 1;
+                  const quantityValue = optionDetail.querySelectorAll("td")[2].querySelector("div p").innerText;
+                  const priceValue = optionDetail.querySelectorAll("td")[1].querySelector("div p:last-of-type span:nth-of-type(2)").innerText;
+                  const imageUrl = optionDetail.querySelector("td div div:nth-of-type(1) a img").getAttribute("src");
+                  const productUrl = optionDetail.querySelector("td div div:nth-of-type(1) a").getAttribute("href");
+
+                  // 각 주문 데이터를 저장
+                  orderData.push({
+                      orderNumber,
+                      orderDate,
+                      productName,
+                      optionValue,
+                      color,
+                      size,
+                      quantityValue,
+                      priceValue,
+                      imageUrl,
+                      productUrl,
+                      postCompany,
+                      trackingNumber
+                  });
+                  
+              } catch (err) {
+                  console.log(`Not Found [ETC]: index ${opt_idx}`);
+              }
+          });
+          copyToClipboard(convertOrderDataToString(orderData));
+      });
+
+      // 크롤링한 주문 데이터를 콘솔에 출력 (또는 저장/전송 가능)
+      console.log(orderData);
+
+  } catch (error) {
+      console.error('Error during crawling:', error);
+  }
+});
+
   
   // 현재 페이지의 HTML을 가져오는 함수
   function getHTMLContent() {
@@ -73,27 +187,3 @@ document.getElementById('saveBtn').addEventListener('click', () => {
 });
 
 
-function getPostCompany() {
-    const postDict = {};
-    const listBoughtItems = document.querySelectorAll("#list-bought-items div");
-
-    listBoughtItems.forEach((div, i) => {
-        try {
-            const prefix = div.querySelector("div > div > div > div:nth-of-type(2) > div");
-            const postCompany = prefix.querySelector("div span").innerText;
-            const trackingNumber = prefix.querySelectorAll("div span")[2].innerText;
-            const orderString = prefix.querySelector("ul li:nth-of-type(3) p span a").getAttribute("href");
-
-            // 정규식을 사용하여 orderId를 추출
-            const match = orderString.match(/orderId=(\d+)/);
-            if (match) {
-                const orderId = match[1];
-                postDict[orderId] = { post_company: postCompany, tracking_number: trackingNumber };
-            }
-        } catch (err) {
-            console.log(`Error processing item ${i}:`, err);
-        }
-    });
-
-    return postDict;
-}
