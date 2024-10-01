@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Web Page Crawler",
+    "name": "Taobao Crawler",
     "version": "1.0",
-    "description": "Crawl the current web page and save HTML content.",
+    "description": "Crawl the Taobao page and save HTML content.",
     "permissions": [
       "activeTab", 
       "scripting",
@@ -15,6 +15,13 @@
         "48": "icon48.png",
         "128": "icon128.png"
       }
-    }
+    },
+    "content_scripts": [
+      {
+        "matches": [
+          "https://buyertrade.taobao.com/trade/itemlist/list_bought_items.htm*"
+        ], 
+        "js": ["content.js"]
+      }
+    ]
   }
-  
