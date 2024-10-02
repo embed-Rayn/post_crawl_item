@@ -1,3 +1,42 @@
+function getPostCompany() {
+    document.querySelectorAll('#viewLogistic').forEach((element) => {
+        // 마우스 hover(hover) 이벤트 트리거
+        const mouseOverEvent = new MouseEvent('mouseover', {
+            bubbles: true,
+            cancelable: true,
+            view: window
+        });
+    
+        // 각 요소에 mouseover 이벤트 발생
+        element.dispatchEvent(mouseOverEvent);
+    });
+
+    const postDict = {};
+    const listBoughtItems = document.querySelectorAll("#list-bought-items div");
+    listBoughtItems.forEach((div, i) => {
+        try {
+            const prefix = div.querySelector("div div div div:nth-of-type(2) div");
+            const postCompany = prefix.querySelector("div span").innerText;
+            const trackingNumber = prefix.querySelectorAll("div span")[2].innerText;
+            const orderString = prefix.querySelector("ul li:nth-of-type(3) p span a").getAttribute("href");
+            console.log(postCompany);
+            console.log(trackingNumber);
+            console.log(orderString);
+            // 정규식을 사용하여 orderId를 추출
+            const match = orderString.match(/orderId=(\d+)/);
+            if (match) {
+                const orderId = match[1];
+                postDict[orderId] = { post_company: postCompany, tracking_number: trackingNumber };
+                
+            }
+        } catch (err) {
+            // console.log(`Error processing item ${i}:`, err);
+        }
+    });
+
+    return postDict;
+}
+
 function formatList(list, keyOrder) {
     // 각 dict에 대해 keyOrder 순서대로 값을 추출하고, \t로 구분하여 문자열로 반환
     const formattedList = list.map(dict => {

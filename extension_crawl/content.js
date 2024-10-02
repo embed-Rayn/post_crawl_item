@@ -10,29 +10,26 @@ function getPostCompany() {
         // 각 요소에 mouseover 이벤트 발생
         element.dispatchEvent(mouseOverEvent);
     });
-    setTimeout(() => {
-        console.log("2초 대기 후 작업 수행");
-        const postDict = {};
-        const listBoughtItems = document.querySelectorAll("#list-bought-items div");
-        listBoughtItems.forEach((div, i) => {
-            try {
-                const prefix = div.querySelector("div div div div:nth-of-type(2) div");
-                const postCompany = prefix.querySelector("div span").innerText;
-                const trackingNumber = prefix.querySelectorAll("div span")[2].innerText;
-                const orderString = prefix.querySelector("ul li:nth-of-type(3) p span a").getAttribute("href");
-                
-                // 정규식을 사용하여 orderId를 추출
-                const match = orderString.match(/orderId=(\d+)/);
-                if (match) {
-                    const orderId = match[1];
-                    postDict[orderId] = { post_company: postCompany, tracking_number: trackingNumber };
-                }
-            } catch (err) {
-                console.log(`Error processing item ${i}:`, err);
-            }
-        });
-    }, 2000);
     
+    const postDict = {};
+    const listBoughtItems = document.querySelectorAll("#list-bought-items div");
+    listBoughtItems.forEach((div, i) => {
+        try {
+            const prefix = div.querySelector("div div div div:nth-of-type(2) div");
+            const postCompany = prefix.querySelector("div span").innerText;
+            const trackingNumber = prefix.querySelectorAll("div span")[2].innerText;
+            const orderString = prefix.querySelector("ul li:nth-of-type(3) p span a").getAttribute("href");
+            
+            // 정규식을 사용하여 orderId를 추출
+            const match = orderString.match(/orderId=(\d+)/);
+            if (match) {
+                const orderId = match[1];
+                postDict[orderId] = { post_company: postCompany, tracking_number: trackingNumber };
+            }
+        } catch (err) {
+            console.log(`Error processing item ${i}:`, err);
+        }
+    });
 
     return postDict;
 }
