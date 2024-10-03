@@ -61,7 +61,7 @@ function crawling(postCompanyDict){
                         const productName = optionDetail.querySelector("td div div:nth-of-type(2) p a span:nth-of-type(2)").innerText;
                         const optionValue = (opt_idx + 1).toString();;
                         try{
-                            color = optionDetail.querySelector("td div div:nth-of-type(2) p:nth-of-type(2) span span(3)").innerText;
+                            color = optionDetail.querySelector("td div div:nth-of-type(2) p:nth-of-type(2) span span:nth-child(3)").innerText;
                         } catch(err){
                             console.log("color 없음");
                         }
@@ -72,11 +72,12 @@ function crawling(postCompanyDict){
                         }
                         const quantityValue = optionDetail.querySelectorAll("td")[2].querySelector("div p").innerText;
                         const priceValue = optionDetail.querySelectorAll("td")[1].querySelector("div p:last-of-type span:nth-of-type(2)").innerText;
-                        const imageUrl = optionDetail.querySelector("td div div:nth-of-type(1) a img").getAttribute("src").replace(/_\d+x\d+\.\w+$/, '');;
-                        const productUrl = optionDetail.querySelector("td div div:nth-of-type(1) a").getAttribute("href");
+                        const imageUrl = "https:" + optionDetail.querySelector("td div div:nth-of-type(1) a img").getAttribute("src").replace(/_\d+x\d+\.\w+$/, '');
+                        const productUrl = "https:" + optionDetail.querySelector("td div div:nth-of-type(1) a").getAttribute("href");
                         console.log(orderNumber, orderDate, productName, optionValue, color, size, quantityValue, priceValue, imageUrl, productUrl, postCompany, trackingNumber);
                         // 각 주문 데이터를 저장
                         orderData.push({
+                            tabaoID,
                             orderNumber,
                             orderDate,
                             productName,
