@@ -96,6 +96,25 @@ document.getElementById('saveBtn').addEventListener('click', () => {
     });
 });
 
+// popup.js에서 클립보드 내용을 읽어 content.js로 전달
+document.getElementById('readClipboardBtn').addEventListener('click', async () => {
+    try {
+        const clipboardText = await navigator.clipboard.readText();
+        console.log("Read from clipboard:", clipboardText);
+
+        // 현재 활성 탭에 clipboardText를 전송
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            if (tabs.length > 0) {
+                chrome.tabs.sendMessage(tabs[0].id, {
+                    action: "processClipboard",
+                    clipboardText: clipboardText
+                });
+            }
+        });
+    } catch (err) {
+        console.error("Error reading clipboard:", err);
+    }
+});
 
 
 document.getElementById('crawlBtn').addEventListener('click', () => {

@@ -33,7 +33,22 @@ function getPostCompany() {
 
     return postDict;
 }
-function crawling(postCompanyDict){
+
+
+async function readClipboard() {
+    try {
+        const text = await navigator.clipboard.readText();
+        console.log("클립보드에서 읽어온 내용:", text);
+        const trackingNumbers = clipboardText.split('\n').map(num => num.trim());
+        return trackingNumbers;
+    } catch (err) {
+        console.error("클립보드에서 내용을 읽어오는 중 오류 발생:", err);
+        return null;
+    }
+}
+
+
+function crawling(postCompanyDict, trackingNumbers){
     const tabaoID = document.querySelector("#J_SiteNavLogin div div a").innerText;
     console.log(tabaoID);
     // tp-bought-root div 찾기
@@ -46,58 +61,62 @@ function crawling(postCompanyDict){
         try {// 주문번호 찾기
             const orderNumber = div.querySelector("table tbody tr td span:nth-of-type(3)").innerText;
             const orderDate = div.querySelector("table tbody tr td label span:nth-of-type(2)").innerText;
-            try {
-                const postInfo = postCompanyDict[orderNumber];
-                const postCompany = postInfo.post_company;
-                const trackingNumber = postInfo.tracking_number;
-                const optionDetails = div.querySelectorAll("table tbody:nth-of-type(2) tr");
+            //
+            if (trackingNumbers.includes(orderNumber)){
+                try {
+                    const postInfo = postCompanyDict[orderNumber];
+                    const postCompany = postInfo.post_company;
+                    const trackingNumber = postInfo.tracking_number;
+                    const optionDetails = div.querySelectorAll("table tbody:nth-of-type(2) tr");
 
-                optionDetails.forEach((optionDetail, opt_idx) => {
-                    console.log(opt_idx);
-                    let color = "";
-                    let size = "";
-                    try {
-                        
-                        const productName = optionDetail.querySelector("td div div:nth-of-type(2) p a span:nth-of-type(2)").innerText;
-                        const optionValue = (opt_idx + 1).toString();;
-                        try{
-                            color = optionDetail.querySelector("td div div:nth-of-type(2) p:nth-of-type(2) span span:nth-child(3)").innerText;
-                        } catch(err){
-                            console.log("color 없음");
+                    optionDetails.forEach((optionDetail, opt_idx) => {
+                        console.log(opt_idx);
+                        let color = "";
+                        let size = "";
+                        try {
+                            
+                            const productName = optionDetail.querySelector("td div div:nth-of-type(2) p a span:nth-of-type(2)").innerText;
+                            const optionValue = (opt_idx + 1).toString();;
+                            try{
+                                color = optionDetail.querySelector("td div div:nth-of-type(2) p:nth-of-type(2) span span:nth-child(3)").innerText;
+                            } catch(err){
+                                console.log("color 없음");
+                            }
+                            try{
+                                size = optionDetail.querySelector("td div div:nth-of-type(2) p:nth-of-type(2) span:nth-of-type(2) span:nth-of-type(3)").innerText;
+                            } catch(err){
+                                console.log("size 없음");
+                            }
+                            const quantityValue = optionDetail.querySelectorAll("td")[2].querySelector("div p").innerText;
+                            const priceValue = optionDetail.querySelectorAll("td")[1].querySelector("div p:last-of-type span:nth-of-type(2)").innerText;
+                            const imageUrl = "https:" + optionDetail.querySelector("td div div:nth-of-type(1) a img").getAttribute("src").replace(/_\d+x\d+\.\w+$/, '');
+                            const productUrl = "https:" + optionDetail.querySelector("td div div:nth-of-type(1) a").getAttribute("href");
+                            console.log(orderNumber, orderDate, productName, optionValue, color, size, quantityValue, priceValue, imageUrl, productUrl, postCompany, trackingNumber);
+                            // 각 주문 데이터를 저장
+                            orderData.push({
+                                tabaoID,
+                                orderNumber,
+                                orderDate,
+                                productName,
+                                optionValue,
+                                color,
+                                size,
+                                quantityValue,
+                                priceValue,
+                                imageUrl,
+                                productUrl,
+                                postCompany,
+                                trackingNumber
+                            });
+                        } 
+                        catch (err) {
+                            console.log(`Not Found [ETC]: index ${opt_idx}`);
                         }
-                        try{
-                            size = optionDetail.querySelector("td div div:nth-of-type(2) p:nth-of-type(2) span:nth-of-type(2) span:nth-of-type(3)").innerText;
-                        } catch(err){
-                            console.log("size 없음");
-                        }
-                        const quantityValue = optionDetail.querySelectorAll("td")[2].querySelector("div p").innerText;
-                        const priceValue = optionDetail.querySelectorAll("td")[1].querySelector("div p:last-of-type span:nth-of-type(2)").innerText;
-                        const imageUrl = "https:" + optionDetail.querySelector("td div div:nth-of-type(1) a img").getAttribute("src").replace(/_\d+x\d+\.\w+$/, '');
-                        const productUrl = "https:" + optionDetail.querySelector("td div div:nth-of-type(1) a").getAttribute("href");
-                        console.log(orderNumber, orderDate, productName, optionValue, color, size, quantityValue, priceValue, imageUrl, productUrl, postCompany, trackingNumber);
-                        // 각 주문 데이터를 저장
-                        orderData.push({
-                            tabaoID,
-                            orderNumber,
-                            orderDate,
-                            productName,
-                            optionValue,
-                            color,
-                            size,
-                            quantityValue,
-                            priceValue,
-                            imageUrl,
-                            productUrl,
-                            postCompany,
-                            trackingNumber
-                        });
-                    } 
-                    catch (err) {
-                        console.log(`Not Found [ETC]: index ${opt_idx}`);
-                    }
-            });
-            } catch (err) {
-                console.log(`Not Found [post_info]: index ${div_i}`);
+                });
+                } catch (err) {
+                    console.log(`Not Found [post_info]: index ${div_i}`);
+                }
+            //
             }
         } catch (err) {
             console.log(`Not Found [order_number]: index ${div_i}`);
@@ -113,7 +132,9 @@ function crawling(postCompanyDict){
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "getPostCompany") {
         const postCompanyData = getPostCompany();
-        sendData = crawling(postCompanyData);
+        const trackingNumbers = readClipboard();
+        sendData = crawling(postCompanyData, trackingNumbers);
+        // sendData = crawling(postCompanyData);
         sendResponse({ data: sendData });
     }
 });
