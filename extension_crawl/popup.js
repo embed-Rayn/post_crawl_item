@@ -99,7 +99,13 @@ document.getElementById('saveBtn').addEventListener('click', () => {
 // popup.js에서 클립보드 내용을 읽어 content.js로 전달
 document.getElementById('readClipboardBtn').addEventListener('click', async () => {
     try {
-        const clipboardText = await navigator.clipboard.readText();
+        let clipboardText = await navigator.clipboard.readText();
+        
+        // 클립보드 내용이 문자열이 아닌 경우 빈 문자열로 처리
+        if (typeof clipboardText !== 'string') {
+            clipboardText = "";
+        }
+
         console.log("Read from clipboard:", clipboardText);
 
         // 현재 활성 탭에 clipboardText를 전송

@@ -35,34 +35,38 @@ function getPostCompany() {
 }
 
 
-async function readClipboard() {
-    try {
-        const text = await navigator.clipboard.readText();
-        console.log("클립보드에서 읽어온 내용:", text);
-        const trackingNumbers = clipboardText.split('\n').map(num => num.trim());
-        return trackingNumbers;
-    } catch (err) {
-        console.error("클립보드에서 내용을 읽어오는 중 오류 발생:", err);
-        return null;
-    }
-}
+// async function readClipboard() {
+//     try {
+//         const text = await navigator.clipboard.readText();
+//         console.log("클립보드에서 읽어온 내용:", text);
+//         const trackingNumbers = clipboardText.split('\n').map(num => num.trim());
+//         return trackingNumbers;
+//     } catch (err) {
+//         console.error("클립보드에서 내용을 읽어오는 중 오류 발생:", err);
+//         return null;
+//     }
+// }
 
 
-function crawling(postCompanyDict, trackingNumbers){
+function crawling(postCompanyDict, trackingNumbers = null) {
     const tabaoID = document.querySelector("#J_SiteNavLogin div div a").innerText;
-    console.log(tabaoID);
+    console.log("Taobao ID:", tabaoID);
+
     // tp-bought-root div 찾기
     const rootDiv = document.querySelector("#tp-bought-root");
 
-// 주문 정보를 저장할 배열
+    // 주문 정보를 저장할 배열
     const orderData = [];
+
     // rootDiv에서 모든 div 탐색
     rootDiv.querySelectorAll('div').forEach((div, div_i) => {
-        try {// 주문번호 찾기
+        try {
+            // 주문번호 찾기
             const orderNumber = div.querySelector("table tbody tr td span:nth-of-type(3)").innerText;
             const orderDate = div.querySelector("table tbody tr td label span:nth-of-type(2)").innerText;
-            //
-            if (trackingNumbers.includes(orderNumber)){
+
+            // trackingNumbers가 없거나 orderNumber가 trackingNumbers에 포함된 경우만 처리
+            if (!trackingNumbers || trackingNumbers.includes(orderNumber)) {
                 try {
                     const postInfo = postCompanyDict[orderNumber];
                     const postCompany = postInfo.post_company;
@@ -70,28 +74,29 @@ function crawling(postCompanyDict, trackingNumbers){
                     const optionDetails = div.querySelectorAll("table tbody:nth-of-type(2) tr");
 
                     optionDetails.forEach((optionDetail, opt_idx) => {
-                        console.log(opt_idx);
                         let color = "";
                         let size = "";
                         try {
-                            
                             const productName = optionDetail.querySelector("td div div:nth-of-type(2) p a span:nth-of-type(2)").innerText;
-                            const optionValue = (opt_idx + 1).toString();;
-                            try{
+                            const optionValue = (opt_idx + 1).toString();
+
+                            try {
                                 color = optionDetail.querySelector("td div div:nth-of-type(2) p:nth-of-type(2) span span:nth-child(3)").innerText;
-                            } catch(err){
+                            } catch (err) {
                                 console.log("color 없음");
                             }
-                            try{
+
+                            try {
                                 size = optionDetail.querySelector("td div div:nth-of-type(2) p:nth-of-type(2) span:nth-of-type(2) span:nth-of-type(3)").innerText;
-                            } catch(err){
+                            } catch (err) {
                                 console.log("size 없음");
                             }
+
                             const quantityValue = optionDetail.querySelectorAll("td")[2].querySelector("div p").innerText;
                             const priceValue = optionDetail.querySelectorAll("td")[1].querySelector("div p:last-of-type span:nth-of-type(2)").innerText;
                             const imageUrl = "https:" + optionDetail.querySelector("td div div:nth-of-type(1) a img").getAttribute("src").replace(/_\d+x\d+\.\w+$/, '');
                             const productUrl = "https:" + optionDetail.querySelector("td div div:nth-of-type(1) a").getAttribute("href");
-                            console.log(orderNumber, orderDate, productName, optionValue, color, size, quantityValue, priceValue, imageUrl, productUrl, postCompany, trackingNumber);
+
                             // 각 주문 데이터를 저장
                             orderData.push({
                                 tabaoID,
@@ -108,33 +113,54 @@ function crawling(postCompanyDict, trackingNumbers){
                                 postCompany,
                                 trackingNumber
                             });
-                        } 
-                        catch (err) {
-                            console.log(`Not Found [ETC]: index ${opt_idx}`);
+                        } catch (err) {
+                            console.log(`Error processing option detail [index ${opt_idx}]`, err);
                         }
-                });
+                    });
                 } catch (err) {
-                    console.log(`Not Found [post_info]: index ${div_i}`);
+                    console.log(`Post info not found for div index ${div_i}`, err);
                 }
-            //
             }
         } catch (err) {
-            console.log(`Not Found [order_number]: index ${div_i}`);
+            console.log(`Order number not found for div index ${div_i}`, err);
         }
     });
+
+    // 크롤링한 주문 데이터를 콘솔에 출력 (또는 저장/전송 가능)
+    console.log("Collected order data:", orderData);
+    return orderData;
+}
+
 
     // 크롤링한 주문 데이터를 콘솔에 출력 (또는 저장/전송 가능)
     console.log(orderData);
     return(orderData)
 };
+let trackingNumbers = null; // 전역 변수로 trackingNumbers를 설정
 
-// 다른 스크립트와 통신을 위해 메시지 받기
+// 클립보드 데이터를 처리하는 부분
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.action === "processClipboard" && message.clipboardText) {
+        const clipboardText = message.clipboardText;
+        console.log("Received clipboard data:", clipboardText);
+
+        // 클립보드 텍스트가 있으면 줄바꿈(\n) 기준으로 분리하여 배열로 저장
+        trackingNumbers = clipboardText.split('\n').map(num => num.trim());
+
+        sendResponse({ status: "processed" });
+        return true;
+    }
+});
+
+// 전체 데이터를 대상으로 크롤링하거나, 클립보드에 있는 데이터만 대상으로 크롤링
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "getPostCompany") {
         const postCompanyData = getPostCompany();
-        const trackingNumbers = readClipboard();
-        sendData = crawling(postCompanyData, trackingNumbers);
-        // sendData = crawling(postCompanyData);
+        console.log("clipboard data:", trackingNumbers);
+        // trackingNumbers가 없으면 전체 대상으로 크롤링, 있으면 해당 범위만 크롤링
+        const sendData = trackingNumbers ? crawling(postCompanyData, trackingNumbers) : crawling(postCompanyData);
+
         sendResponse({ data: sendData });
+        return true;
     }
 });
