@@ -4,6 +4,8 @@
     "version": "1.0",
     "description": "Crawl the Taobao page and save HTML content.",
     "permissions": [
+      "clipboardRead",
+      "clipboardWrite",
       "activeTab", 
       "scripting",
       "storage",

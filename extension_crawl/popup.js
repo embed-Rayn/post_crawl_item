@@ -48,6 +48,23 @@ function formatList(list, keyOrder) {
 }
 
 
+// 클립보드에서 텍스트를 읽어오는 함수
+async function readClipboardText() {
+    try {
+        // 클립보드에서 텍스트 읽기
+        const clipboardText = await navigator.clipboard.readText();
+
+        // 클립보드 텍스트 출력
+        console.log("클립보드에서 읽어온 내용\n", clipboardText);
+
+        // 클립보드 텍스트 반환
+        return clipboardText;
+    } catch (err) {
+        console.error("클립보드에서 텍스트를 읽는 중 오류 발생:", err);
+        return err; // 오류 발생 시 빈 문자열 반환
+    }
+}
+
 
 // 모든 콤보박스에 change 이벤트 추가
 document.querySelectorAll('select').forEach((comboBox) => {
@@ -96,29 +113,20 @@ document.getElementById('saveBtn').addEventListener('click', () => {
     });
 });
 
+let storedClipboardText = ''; // 클립보드 텍스트를 저장할 변수
+
 // popup.js에서 클립보드 내용을 읽어 content.js로 전달
 document.getElementById('readClipboardBtn').addEventListener('click', async () => {
-    try {
-        let clipboardText = await navigator.clipboard.readText();
-        
-        // 클립보드 내용이 문자열이 아닌 경우 빈 문자열로 처리
-        if (typeof clipboardText !== 'string') {
-            clipboardText = "";
-        }
+    const clipboardText = await readClipboardText();
 
-        console.log("Read from clipboard:", clipboardText);
-
-        // 현재 활성 탭에 clipboardText를 전송
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-            if (tabs.length > 0) {
-                chrome.tabs.sendMessage(tabs[0].id, {
-                    action: "processClipboard",
-                    clipboardText: clipboardText
-                });
-            }
-        });
-    } catch (err) {
-        console.error("Error reading clipboard:", err);
+    if (clipboardText) {
+        console.log("클립보드 텍스트:", clipboardText);
+        storedClipboardText = clipboardText; // 클립보드 텍스트를 저장
+        alert("클립보드 텍스트를 읽어왔습니다:\n" + clipboardText);
+    } else {
+        console.log("클립보드가 비어 있습니다.");
+        storedClipboardText = ''; // 클립보드 텍스트를 빈 문자열로 설정
+        alert("클립보드가 비어 있습니다.");
     }
 });
 
@@ -139,17 +147,17 @@ document.getElementById('crawlBtn').addEventListener('click', () => {
             },
             () => {
                 // 스크립트 주입 후 메시지 전송
-                chrome.tabs.sendMessage(tabs[0].id, { action: "getPostCompany" }, (response) => {
+                chrome.tabs.sendMessage(tabs[0].id, { action: "getPostCompany", clipboardText: storedClipboardText }, (response) => {
                     if (chrome.runtime.lastError) {
                         console.error("Error sending message: ", chrome.runtime.lastError.message);
                         return;
                     }
 
                     if (response && response.data) {
-                        const receiveData = response.data
+                        const receiveData = response.data;
                         const uniqueList = [...new Map(receiveData.map(item => [JSON.stringify(item), item])).values()];
                         const comboBoxValues = Array.from(document.querySelectorAll('select')).map(select => select.value);
-                        convertedString = formatList(uniqueList, comboBoxValues);
+                        const convertedString = formatList(uniqueList, comboBoxValues);
                         navigator.clipboard.writeText(convertedString)
                             .then(() => {
                                 console.log('클립보드에 데이터가 복사되었습니다.');
@@ -166,5 +174,6 @@ document.getElementById('crawlBtn').addEventListener('click', () => {
         );
     });
 });
+
 
 

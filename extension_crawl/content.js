@@ -35,19 +35,6 @@ function getPostCompany() {
 }
 
 
-// async function readClipboard() {
-//     try {
-//         const text = await navigator.clipboard.readText();
-//         console.log("클립보드에서 읽어온 내용:", text);
-//         const trackingNumbers = clipboardText.split('\n').map(num => num.trim());
-//         return trackingNumbers;
-//     } catch (err) {
-//         console.error("클립보드에서 내용을 읽어오는 중 오류 발생:", err);
-//         return null;
-//     }
-// }
-
-
 function crawling(postCompanyDict, trackingNumbers = null) {
     const tabaoID = document.querySelector("#J_SiteNavLogin div div a").innerText;
     console.log("Taobao ID:", tabaoID);
@@ -131,36 +118,52 @@ function crawling(postCompanyDict, trackingNumbers = null) {
     return orderData;
 }
 
+// let trackingNumbers = null; // 전역 변수로 trackingNumbers를 설정
 
-    // 크롤링한 주문 데이터를 콘솔에 출력 (또는 저장/전송 가능)
-    console.log(orderData);
-    return(orderData)
-};
-let trackingNumbers = null; // 전역 변수로 trackingNumbers를 설정
+// // 클립보드 데이터를 처리하는 부분
+// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+//     if (message.action === "processClipboard" && message.clipboardText) {
+//         const clipboardText = message.clipboardText;
+//         console.log("Received clipboard data:", clipboardText);
 
-// 클립보드 데이터를 처리하는 부분
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.action === "processClipboard" && message.clipboardText) {
-        const clipboardText = message.clipboardText;
-        console.log("Received clipboard data:", clipboardText);
+//         // 클립보드 텍스트가 있으면 줄바꿈(\n) 기준으로 분리하여 배열로 저장
+//         trackingNumbers = clipboardText.split('\n').map(num => num.trim());
 
-        // 클립보드 텍스트가 있으면 줄바꿈(\n) 기준으로 분리하여 배열로 저장
-        trackingNumbers = clipboardText.split('\n').map(num => num.trim());
-
-        sendResponse({ status: "processed" });
-        return true;
-    }
-});
+//         sendResponse({ status: "processed" });
+//         return true;
+//     }
+// });
 
 // 전체 데이터를 대상으로 크롤링하거나, 클립보드에 있는 데이터만 대상으로 크롤링
+// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+//     if (message.action === "getPostCompany") {
+//         const postCompanyData = getPostCompany();
+//         console.log("clipboard data:", trackingNumbers);
+//         // trackingNumbers가 없으면 전체 대상으로 크롤링, 있으면 해당 범위만 크롤링
+//         const sendData = trackingNumbers ? crawling(postCompanyData, trackingNumbers) : crawling(postCompanyData);
+
+//         sendResponse({ data: sendData });
+//         return true;
+//     }
+// });
+
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "getPostCompany") {
         const postCompanyData = getPostCompany();
-        console.log("clipboard data:", trackingNumbers);
+        let trackingNumbers = null;
+
+        if (message.clipboardText && message.clipboardText.trim() !== '') {
+            const clipboardText = message.clipboardText;
+            console.log("Received clipboard data:", clipboardText);
+
+            // 클립보드 텍스트를 줄바꿈으로 분리하여 배열로 변환
+            trackingNumbers = clipboardText.split('\n').map(num => num.trim());
+        }
+
         // trackingNumbers가 없으면 전체 대상으로 크롤링, 있으면 해당 범위만 크롤링
         const sendData = trackingNumbers ? crawling(postCompanyData, trackingNumbers) : crawling(postCompanyData);
 
         sendResponse({ data: sendData });
-        return true;
     }
 });
