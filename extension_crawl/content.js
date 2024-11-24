@@ -35,7 +35,8 @@ function getPostCompany() {
 }
 
 
-function crawling(postCompanyDict, trackingNumbers = null) {
+function crawling(trackingNumbers = null) {
+    const postCompanyDict = getPostCompany();
     const tabaoID = document.querySelector("#J_SiteNavLogin div div a").innerText;
     console.log("Taobao ID:", tabaoID);
 
@@ -118,39 +119,10 @@ function crawling(postCompanyDict, trackingNumbers = null) {
     return orderData;
 }
 
-// let trackingNumbers = null; // 전역 변수로 trackingNumbers를 설정
-
-// // 클립보드 데이터를 처리하는 부분
-// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-//     if (message.action === "processClipboard" && message.clipboardText) {
-//         const clipboardText = message.clipboardText;
-//         console.log("Received clipboard data:", clipboardText);
-
-//         // 클립보드 텍스트가 있으면 줄바꿈(\n) 기준으로 분리하여 배열로 저장
-//         trackingNumbers = clipboardText.split('\n').map(num => num.trim());
-
-//         sendResponse({ status: "processed" });
-//         return true;
-//     }
-// });
-
-// 전체 데이터를 대상으로 크롤링하거나, 클립보드에 있는 데이터만 대상으로 크롤링
-// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-//     if (message.action === "getPostCompany") {
-//         const postCompanyData = getPostCompany();
-//         console.log("clipboard data:", trackingNumbers);
-//         // trackingNumbers가 없으면 전체 대상으로 크롤링, 있으면 해당 범위만 크롤링
-//         const sendData = trackingNumbers ? crawling(postCompanyData, trackingNumbers) : crawling(postCompanyData);
-
-//         sendResponse({ data: sendData });
-//         return true;
-//     }
-// });
-
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "getPostCompany") {
-        const postCompanyData = getPostCompany();
+        
         let trackingNumbers = null;
 
         if (message.clipboardText && message.clipboardText.trim() !== '') {
@@ -162,7 +134,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         }
 
         // trackingNumbers가 없으면 전체 대상으로 크롤링, 있으면 해당 범위만 크롤링
-        const sendData = trackingNumbers ? crawling(postCompanyData, trackingNumbers) : crawling(postCompanyData);
+        const sendData = trackingNumbers ? crawling(trackingNumbers) : crawling();
 
         sendResponse({ data: sendData });
     }
